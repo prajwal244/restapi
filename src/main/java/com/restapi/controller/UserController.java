@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,19 +31,10 @@ public class UserController {
 	private UsersService uService;
 	
 	
-	@Value("${app.name}")
-	private String appName;
-	
-	@Value("${app.version}")
-	private String appVersion;
-	
-	@GetMapping("/version")
-	public String getAppDetails() {
-		
-		return appName+" - "+appVersion;
-	}
+
 
 	@GetMapping("/Users")
+	@CrossOrigin(origins = "http://localhost:4200")
 	public ResponseEntity<List<Users>> getUsers() {
 		
 		return new ResponseEntity<List<Users>>(uService.getUsers(),HttpStatus.OK);
@@ -51,17 +43,20 @@ public class UserController {
 	
 	
 @GetMapping("/Users/{id}")	
+@CrossOrigin(origins = "http://localhost:4200")
 	public ResponseEntity<Users> findByUsername(@PathVariable("id")Long id){
 		return new ResponseEntity<Users>(uService.fetchSingleUserRecord(id),HttpStatus.OK);
 	}
 	
-	@PostMapping("/Users")
+	@PostMapping("/UsersRegister")
+	@CrossOrigin(origins = "http://localhost:4200")    
 	public ResponseEntity<Users> saveUser( @Valid @RequestBody Users users) {
 		
 		return new ResponseEntity<Users>(uService.saveUser(users),HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/Users/{id}")
+	@CrossOrigin(origins = "http://localhost:4200")
 	public ResponseEntity<Users> updateuser(@PathVariable Long id,@RequestBody Users user) {
 		user.setId(id);
 		
@@ -99,7 +94,8 @@ private  APIResponse<List<Users>> getUserWithSorting(@PathVariable String field)
 	return new APIResponse<>(allUser.size(),allUser);
 }
 	
-@DeleteMapping("/Users/delete/{firstname}")	
+@DeleteMapping("/Users/{firstname}")
+@CrossOrigin(origins = "http://localhost:4200")
 public ResponseEntity<String> deleteByUserName(@PathVariable String firstname){
 	return new ResponseEntity<String>(uService.deleteByUserName(firstname)+" no of record affected",HttpStatus.OK);
 	

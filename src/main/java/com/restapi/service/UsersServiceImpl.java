@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +16,7 @@ import com.restapi.model.Users;
 import com.restapi.repository.UsersRepository;
 
 @Service
+@Profile(value= {"local","dev","prod"})
 public  class UsersServiceImpl implements UsersService {
      
 	@Autowired
